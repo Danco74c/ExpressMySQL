@@ -5,11 +5,20 @@ dotenv.config();
 
 const connection = mysql.createConnection({
     host: process.env.HOST,
-    user: process.env.USER,
+    user: process.env.USERNAME,
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
-    port: process.env.DB_PORT
+    port: process.env.DB_PORT,
+    insecureAuth: true
+
 });
+
+
+console.log(process.env.HOST);
+console.log(process.env.USERNAME);
+console.log(process.env.PASSWORD);
+console.log(process.env.DATABASE);
+console.log(process.env.DB_PORT);
 
 connection.connect((err) => {
     if (err) {
@@ -49,6 +58,7 @@ class DbService {
                 const query = "INSERT INTO names (name, date_added) VALUES (?,?);";
 
                 connection.query(query, [name, dateAdded] , (err, result) => {
+			console.log(err);
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
                 })
