@@ -14,11 +14,6 @@ const connection = mysql.createConnection({
 });
 
 
-console.log(process.env.HOST);
-console.log(process.env.USERNAME);
-console.log(process.env.PASSWORD);
-console.log(process.env.DATABASE);
-console.log(process.env.DB_PORT);
 
 connection.connect((err) => {
     if (err) {
@@ -36,92 +31,14 @@ class DbService {
     async getAllData() {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT * FROM names;";
+                const query = "SELECT * FROM demo;";
 
                 connection.query(query, (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
                 })
             });
-            // console.log(response);
-            return response;
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-
-    async insertNewName(name) {
-        try {
-            const dateAdded = new Date();
-            const insertId = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO names (name, date_added) VALUES (?,?);";
-
-                connection.query(query, [name, dateAdded] , (err, result) => {
-			console.log(err);
-                    if (err) reject(new Error(err.message));
-                    resolve(result.insertId);
-                })
-            });
-            return {
-                id : insertId,
-                name : name,
-                dateAdded : dateAdded
-            };
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async deleteRowById(id) {
-        try {
-            id = parseInt(id, 10); 
-            const response = await new Promise((resolve, reject) => {
-                const query = "DELETE FROM names WHERE id = ?";
-    
-                connection.query(query, [id] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result.affectedRows);
-                })
-            });
-    
-            return response === 1 ? true : false;
-        } catch (error) {
-            console.log(error);
-            return false;
-        }
-    }
-
-    async updateNameById(id, name) {
-        try {
-            id = parseInt(id, 10); 
-            const response = await new Promise((resolve, reject) => {
-                const query = "UPDATE names SET name = ? WHERE id = ?";
-    
-                connection.query(query, [name, id] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result.affectedRows);
-                })
-            });
-    
-            return response === 1 ? true : false;
-        } catch (error) {
-            console.log(error);
-            return false;
-        }
-    }
-
-    async searchByName(name) {
-        try {
-            const response = await new Promise((resolve, reject) => {
-                const query = "SELECT * FROM names WHERE name = ?;";
-
-                connection.query(query, [name], (err, results) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(results);
-                })
-            });
-
+            console.log(response);
             return response;
         } catch (error) {
             console.log(error);
