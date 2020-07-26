@@ -7,7 +7,7 @@ let instance = null;
 dotenv.config();
 
 let connection = mysql.createConnection({
-    host: process.env.VMC_HOST_DB,
+    host: process.env.LOCAL_HOST_DB,
     user: process.env.USERNAME,
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
@@ -50,7 +50,7 @@ class DbService {
     async changeDBConnection() {
             connection.end();
             connection = mysql.createConnection({
-                host: process.env.LOCAL_HOST_DB,
+                host: process.env.VMC_HOST_DB,
                 user: process.env.USERNAME,
                 password: process.env.PASSWORD,
                 database: process.env.DATABASE,
