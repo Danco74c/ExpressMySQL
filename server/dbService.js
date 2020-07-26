@@ -1,10 +1,13 @@
 const mysql = require('mysql');
 const dotenv = require('dotenv');
+const os = require('os');
+const dns = require('dns');
+
 let instance = null;
 dotenv.config();
 
-const connection = mysql.createConnection({
-    host: process.env.HOST,
+let connection = mysql.createConnection({
+    host: process.env.VMC_HOST_DB,
     user: process.env.USERNAME,
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
@@ -12,8 +15,6 @@ const connection = mysql.createConnection({
     insecureAuth: true
 
 });
-
-
 
 connection.connect((err) => {
     if (err) {
@@ -30,6 +31,7 @@ class DbService {
 
     async getAllData() {
         try {
+
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT * FROM demo;";
 
@@ -43,6 +45,28 @@ class DbService {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    async changeDBConnection() {
+            connection.end();
+            connection = mysql.createConnection({
+                host: process.env.LOCAL_HOST_DB,
+                user: process.env.USERNAME,
+                password: process.env.PASSWORD,
+                database: process.env.DATABASE,
+                port: process.env.DB_PORT,
+                insecureAuth: true
+            
+            });
+
+            connection.connect((err) => {
+                if (err) {
+                    console.log(err.message);
+                }
+                // console.log('db ' + connection.state);
+            });
+
+            return "OK";
     }
 }
 

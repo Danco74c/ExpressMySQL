@@ -16,7 +16,7 @@ function loadHTML(data) {
         return;
     }
 
-    let html = data[0].text;
+    let html = data[0].msg;
 
     textElement.innerHTML = html;
 }

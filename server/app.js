@@ -29,5 +29,17 @@ app.get('/getString', (request, response) => {
     .catch(err => console.log(err));
 })
 
+app.post('/changeDB', (request, response) => {
+    const db = dbService.getDbServiceInstance();
+
+    const result = db.changeDBConnection();
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+})
+
+
+
 
 app.listen(process.env.PORT, () => console.log('app is running'));
